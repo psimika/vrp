@@ -19,5 +19,9 @@ public class Truck {
         route.add(customer);
         return true;
     }
+
+    public String toString() {
+        return String.format("cargo: %d, route: %s", this.cargo, this.route);
+    }
 }
 
