@@ -7,6 +7,7 @@ public class Main {
 
     private ArrayList<Node> customers;
     private ArrayList<Node> allNodes;
+    private double[][] distanceMatrix;
 
     public static void main(String[] args) {
         Main m = new Main();
@@ -17,6 +18,7 @@ public class Main {
 
         m.sortByDemandReverse(m.customers);
         System.out.println(m.customers);
+        m.printDistanceMatrix();
     }
 
     public void CreateAllNodesAndCustomerLists(int numberOfCustomers) {
@@ -46,6 +48,36 @@ public class Main {
         for (int i = 0 ; i < allNodes.size(); i++) {
             Node nd = allNodes.get(i);
             nd.ID = i;
+        }
+
+        this.distanceMatrix = new double [allNodes.size()][allNodes.size()];
+        this.calculateDistanceMatrix(this.allNodes);
+    }
+
+    private void printDistanceMatrix() {
+        for (int i = 0; i < this.distanceMatrix.length; i++) {
+            for (int j = 0; j < this.distanceMatrix[i].length; j++) {
+                System.out.print(this.distanceMatrix[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+    private void calculateDistanceMatrix(ArrayList<Node> allNodes) {
+        for (int i = 0 ; i < allNodes.size(); i++) {
+            Node from = allNodes.get(i);
+            
+            for (int j = 0 ; j < allNodes.size(); j++) {
+                Node to = allNodes.get(j);
+                
+                double deltaX = (from.x - to.x);
+                double deltaY = (from.y - to.y);
+                double distance = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                
+                distance = Math.round(distance);
+                
+                this.distanceMatrix[i][j] = distance;
+            }
         }
     }
 
