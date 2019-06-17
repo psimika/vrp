@@ -12,16 +12,30 @@ public class Main {
     public static void main(String[] args) {
         Main m = new Main();
         int numberOfCustomers = 10;
-        m.CreateAllNodesAndCustomerLists(numberOfCustomers);
+        m.createAllNodesAndCustomerLists(numberOfCustomers);
         //System.out.println(m.customers);
         //System.out.println(m.allNodes);
 
         m.sortByDemandReverse(m.customers);
-        System.out.println(m.customers);
-        m.printDistanceMatrix();
+        //System.out.println(m.customers);
+        ArrayList<Truck> routes = new ArrayList<Truck>();
+        Node depot = m.allNodes.get(0);
+        Truck truck = new Truck(depot);
+        for (Node cust : m.customers) {
+            boolean ok = truck.addCustomer(cust);
+            if (!ok) {
+                routes.add(truck);
+                truck = new Truck(depot);
+                continue;
+            }
+        }
+        routes.add(truck);
+        for (Truck t : routes) {
+            System.out.println(t);
+        }
     }
 
-    public void CreateAllNodesAndCustomerLists(int numberOfCustomers) {
+    public void createAllNodesAndCustomerLists(int numberOfCustomers) {
         // Create the list with the customers.
         customers = new ArrayList<Node>();
         int birthday = 9021998; // if your bday is on 9 feb 1998
