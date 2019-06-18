@@ -1,45 +1,17 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Collections;
-import java.util.Comparator;
 
-public class Main {
+public class Problem {
 
     private ArrayList<Node> customers;
     private ArrayList<Node> allNodes;
     private double[][] distanceMatrix;
 
-    public static void main(String[] args) {
-        Main m = new Main();
-        int numberOfCustomers = 10;
-        m.createAllNodesAndCustomerLists(numberOfCustomers);
-        //System.out.println(m.customers);
-        //System.out.println(m.allNodes);
-
-        m.sortByDemandReverse(m.customers);
-        //System.out.println(m.customers);
-        ArrayList<Truck> routes = new ArrayList<Truck>();
-        Node depot = m.allNodes.get(0);
-        Truck truck = new Truck(depot);
-        for (Node cust : m.customers) {
-            boolean ok = truck.addCustomer(cust);
-            if (!ok) {
-                routes.add(truck);
-                truck = new Truck(depot);
-                continue;
-            }
-        }
-        routes.add(truck);
-        for (Truck t : routes) {
-            System.out.println(t);
-        }
-    }
-
-    public void createAllNodesAndCustomerLists(int numberOfCustomers) {
+    public void createAllNodesAndCustomerLists(int numberOfCustomers, int seed) {
         // Create the list with the customers.
         customers = new ArrayList<Node>();
-        int birthday = 9021998; // if your bday is on 9 feb 1998
-        Random ran = new Random(birthday);
+        
+        Random ran = new Random(seed);
         for (int i = 0 ; i < numberOfCustomers; i++) {
             Node cust = new Node();
             cust.x = ran.nextInt(100);
@@ -68,7 +40,7 @@ public class Main {
         this.calculateDistanceMatrix(this.allNodes);
     }
 
-    private void printDistanceMatrix() {
+    public void printDistanceMatrix() {
         for (int i = 0; i < this.distanceMatrix.length; i++) {
             for (int j = 0; j < this.distanceMatrix[i].length; j++) {
                 System.out.print(this.distanceMatrix[i][j] + "\t");
@@ -95,15 +67,16 @@ public class Main {
         }
     }
 
-    public void sortByDemandReverse(ArrayList<Node> customers) {
-        Collections.sort(customers, new Comparator<Node>(){
-            public int compare(Node a, Node b){
-                if (a.demand == b.demand) {
-                    return 0;
-                } 
-                return a.demand > b.demand ? -1 : 1;
-            }
-        });
+    public ArrayList<Node> getCustomers() {
+        return customers;
+    }
+
+    public ArrayList<Node> getAllNodes() {
+        return allNodes;
+    }
+   
+    public double[][] getDistanceMatrix() {
+        return distanceMatrix;
     }
 }
 
